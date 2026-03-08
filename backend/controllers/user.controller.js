@@ -37,3 +37,23 @@ exports.deleteUser = async (req, res) => {
     res.status(500).json(error);
   }
 };
+
+exports.getDashboard = async (req, res) => {
+  try {
+    const total = await UserRepository.getTotalUsers();
+    const byEstado = await UserRepository.getUsersByEstado();
+    const byCategoria = await UserRepository.getUsersByCategoria();
+    const lastInserted = await UserRepository.getLastInserted();
+    const lastUpdated = await UserRepository.getLastUpdated();
+
+    res.json({
+      totalUsers: total.total,
+      usersByEstado: byEstado,
+      usersByCategoria: byCategoria,
+      lastInserted,
+      lastUpdated
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Error obteniendo dashboard" });
+  }
+};

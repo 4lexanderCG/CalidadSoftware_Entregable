@@ -1,8 +1,8 @@
 class UserFactory {
   static createUser(data) {
-    const { nombre, apellidos, dni, direccion, telefono, correo } = data;
+    const { nombre, apellidos, dni, direccion, telefono, correo, categoria, estado } = data;
 
-    if (!nombre || !apellidos || !dni || !direccion || !telefono || !correo) {
+    if (!nombre || !apellidos || !dni || !direccion || !telefono || !correo || !categoria || !estado) {
       throw new Error("Todos los campos son obligatorios");
     }
 
@@ -13,6 +13,8 @@ class UserFactory {
       direccion: direccion.trim(),
       telefono: telefono.trim(),
       correo: correo.toLowerCase().trim(),
+      categoria: categoria.trim(),
+      estado: estado.trim()
     };
   }
 }

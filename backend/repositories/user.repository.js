@@ -24,7 +24,7 @@ class UserRepository {
   create(user) {
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL InsertUser(?, ?, ?, ?, ?, ?)",
+        "CALL InsertUser(?, ?, ?, ?, ?, ?, ?, ?)",
         [
           user.nombre,
           user.apellidos,
@@ -32,6 +32,8 @@ class UserRepository {
           user.direccion,
           user.telefono,
           user.correo,
+          user.categoria,
+          user.estado
         ],
         (err) => {
           if (err) reject(err);
@@ -44,7 +46,7 @@ class UserRepository {
   update(id, user) {
     return new Promise((resolve, reject) => {
       db.query(
-        "CALL UpdateUser(?, ?, ?, ?, ?, ?, ?)",
+        "CALL UpdateUser(?, ?, ?, ?, ?, ?, ?, ?, ?)",
         [
           id,
           user.nombre,
@@ -53,6 +55,8 @@ class UserRepository {
           user.direccion,
           user.telefono,
           user.correo,
+          user.categoria,
+          user.estado
         ],
         (err) => {
           if (err) reject(err);
@@ -70,6 +74,51 @@ class UserRepository {
       });
     });
   }
+
+  getTotalUsers() {
+    return new Promise((resolve, reject) => {
+      db.query("CALL GetTotalUsers()", (err, results) => {
+        if (err) reject(err);
+        else resolve(results[0][0]);
+      });
+    });
+}
+
+  getUsersByEstado() {
+    return new Promise((resolve, reject) => {
+      db.query("CALL GetUsersByEstado()", (err, results) => {
+        if (err) reject(err);
+        else resolve(results[0]);
+      });
+    });
+  }
+
+  getUsersByCategoria() {
+    return new Promise((resolve, reject) => {
+      db.query("CALL GetUsersByCategoria()", (err, results) => {
+        if (err) reject(err);
+        else resolve(results[0]);
+      });
+    });
+  }
+
+  getLastInserted() {
+    return new Promise((resolve, reject) => {
+      db.query("CALL GetLastInserted()", (err, results) => {
+        if (err) reject(err);
+        else resolve(results[0][0]);
+      });
+    });
+  }
+
+  getLastUpdated() {
+    return new Promise((resolve, reject) => {
+      db.query("CALL GetLastUpdated()", (err, results) => {
+        if (err) reject(err);
+        else resolve(results[0][0]);
+      });
+    });
+}
 }
 
 module.exports = new UserRepository();
