@@ -1,80 +1,38 @@
-PATRONES DE DISEÑO IMPLEMENTADOS
-1. Introducción
-En este proyecto CRUD de usuarios se implementaron tres patrones de diseño con el objetivo de mejorar la organización del código, aplicar principios SOLID y aumentar la mantenibilidad y escalabilidad del sistema. Los patrones implementados son:
+## Instrucciones de Ejecución
 
-1.1 Repository
-El Repository encapsula la lógica de acceso a datos y desacopla la capa de persistencia de la lógica de negocio.
+Para ejecutar este proyecto en tu entorno local, sigue estos pasos:
 
-Implementación en el proyecto
-Se creó la carpeta:
-repositories/user.repository.js
+### Paso 1: Configurar la Base de Datos
+1. Abre tu cliente de MySQL (ej. phpMyAdmin en XAMPP, MySQL Workbench, DBeaver, etc.).
+2. Importa o ejecuta el archivo `base_de_datos.sql` que se encuentra en la raíz del proyecto. Esto creará la base de datos `crud_v3`, la tabla de usuarios y todos los procedimientos almacenados necesarios.
+3. (Opcional) Si tus credenciales de MySQL son distintas al estándar de XAMPP (`root` y sin contraseña), asegúrate de actualizar el archivo `.env` dentro de la carpeta `backend` con tus credenciales correctas.
 
-El repositorio contiene métodos como:
-- getAll(search)
-- create(user)
-- update(id, user)
-- delete(id)
+### Paso 2: Levantar el Backend (Servidor Node.js)
+1. Abre una terminal y navega a la carpeta del servidor:
+   ```bash
+   cd backend
+   ```
+2. Instala las dependencias del servidor:
+   ```bash
+   npm install
+   ```
+3. Inicia el servidor:
+   ```bash
+   npm run dev
+   ```
+   *El backend se ejecutará en http://localhost:5000*
 
-El controlador no ejecuta consultas SQL directamente. En su lugar, delega la responsabilidad al repositorio.
-
-Beneficios obtenidos:
-- Separación clara de responsabilidades.
-- Bajo acoplamiento entre lógica de negocio y base de datos.
-- Facilidad para cambiar el motor de base de datos sin afectar otras capas.
-- Código más limpio y mantenible.
-
-1.2 Singleton
-El Singleton garantiza que una clase tenga una única instancia y proporciona un punto global de acceso a ella.
-
-Implementación en el proyecto
-Se implementó en:
-config/database.js
-
-Se creó una clase Database que:
-- Genera una única conexión a MySQL.
-- Retorna siempre la misma instancia.
-- Evita múltiples conexiones innecesarias.
-
-Beneficios obtenidos:
-- Control centralizado de la conexión a la base de datos.
-- Uso eficiente de recursos.
-- Prevención de múltiples instancias de conexión.
-
-1.3 Factory 
-El Factory encapsula la lógica de creación de objetos y delega esta responsabilidad a una clase especializada, evitando que el controlador instancie o construya directamente los objetos.
-
-Implementación en el proyecto
-Se creó el archivo:
-factories/user.factory.js
-
-La fábrica expone el método:
-UserFactory.createUser(data)
-
-Este método:
-- Valida que todos los campos obligatorios estén presentes.
-- Normaliza los datos (por ejemplo, elimina espacios y convierte el correo a minúsculas).
-- Devuelve un objeto Usuario listo para ser persistido en la base de datos.
-
-El controlador no construye manualmente el objeto ni realiza validaciones, sino que delega esta responsabilidad al Factory.
-
-Beneficios obtenidos:
-- Centralización de la lógica de creación.
-- Validación previa antes de la persistencia.
-- Cumplimiento del principio de responsabilidad única (SRP).
-- Reducción de acoplamiento entre controlador y modelo.
-- Mayor mantenibilidad del sistema.
-
-2. Relación entre los Patrones
-
-El flujo del sistema funciona de la siguiente manera:
-- El Router recibe la petición HTTP.
-- El Controller procesa la solicitud.
-- El Controller utiliza la Factory para crear el objeto Usuario. 
-- El Controller delega el acceso a datos al Repository.
-- El Repository utiliza la conexión Singleton para interactuar con la base de datos.
-
-Esta combinación permite:
-- Separación clara de capas.
-- Código modular.
-- Mejor mantenibilidad.
-- Escalabilidad futura.
+### Paso 3: Levantar el Frontend (Next.js)
+1. Abre **otra** ventana de terminal y navega a la carpeta del cliente web:
+   ```bash
+   cd frontend
+   ```
+2. Instala las dependencias de React/Next.js:
+   ```bash
+   npm install
+   ```
+3. Inicia la aplicación en modo desarrollo:
+   ```bash
+   npm run dev
+   ```
+4. Ahora abre tu navegador web y visita **[http://localhost:3000](http://localhost:3000)** para ver el sistema funcionando.
